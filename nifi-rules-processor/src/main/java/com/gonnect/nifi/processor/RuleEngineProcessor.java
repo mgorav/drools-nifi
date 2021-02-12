@@ -97,7 +97,7 @@ public class RuleEngineProcessor extends AbstractProcessor {
     @Override
     protected void init(final ProcessorInitializationContext context) {
         log = getLogger();
-        log.debug("Init MatrixBI's RuleEngineProcesor");
+        log.debug("Init Gonnect's RuleEngineProcesor");
 
         final List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
         descriptors.add(DRL_PATH);
