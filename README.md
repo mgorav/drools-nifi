@@ -11,8 +11,12 @@
 
 ## Packaging install NAR to Apache Nifi installation 
 Step 1. `mvn clean install package -DskipTests`
+
 Step 2. copy nar file from `/nifi-rules-processor/nifi-ruleengien-processor-nar/target/nifi-rules-processor-nar-{VERSION}.nar` to NiFi folder `/nifi-{version}/lib`
+
 Step 3. (Re) start NiFi
+
 Step 4. Add processor search for `RuleEngineProcessor`
+
 Step 5. Connect Json files and magic happens
 
