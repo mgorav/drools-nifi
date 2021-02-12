@@ -58,7 +58,7 @@ public class RuleEngineProcessor extends AbstractProcessor {
     public static final PropertyDescriptor DRL_PATH = new PropertyDescriptor
             .Builder().name("DRL file path")
             .displayName("DRL file path")
-            .description("File ends with .drl or .xls that contines drools rules")
+            .description("File ends with .drl or .xls that continues drools rules")
             .required(true)
             .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
             .addValidator(StandardValidators.FILE_EXISTS_VALIDATOR)
