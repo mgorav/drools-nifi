@@ -11,11 +11,11 @@ import java.io.InputStreamReader;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.gonnect.nifi.objects.BusinessObjectJson;
+import com.gonnect.nifi.objects.GenericObjectJson;
 import com.gonnect.nifi.objects.JsonBusinessObjects;
 
 
-public class BusinessObjectJsonTest {
+public class GenericObjectJsonTest {
 
     private static String JSON_TEST_1 = "{\"name\":\"Gonnect rocks\"}";
 
@@ -30,7 +30,7 @@ public class BusinessObjectJsonTest {
         InputStreamReader isr = new InputStreamReader(content);
         JsonBusinessObjects o = new JsonBusinessObjects(isr);
         assertTrue(o.hasNext());
-        BusinessObjectJson v = o.next();
+        GenericObjectJson v = o.next();
 
         assertNotNull(v);
     }
@@ -40,7 +40,7 @@ public class BusinessObjectJsonTest {
 
         JsonBusinessObjects o = new JsonBusinessObjects(JSON_TEST_1);
         assertTrue(o.hasNext());
-        BusinessObjectJson v = o.next();
+        GenericObjectJson v = o.next();
 
         assertNotNull(v);
         assertEquals(v.getJson(), JSON_TEST_1);
@@ -50,7 +50,7 @@ public class BusinessObjectJsonTest {
     public void test_string_input_getExect() throws Exception {
         JsonBusinessObjects o = new JsonBusinessObjects(JSON_TEST_1);
         assertTrue(o.hasNext());
-        BusinessObjectJson v = o.next();
+        GenericObjectJson v = o.next();
         assertNotNull(v);
         assertEquals(v.get("name"), "Gonnect rocks");
     }
@@ -60,7 +60,7 @@ public class BusinessObjectJsonTest {
         String json_str = "{\"name\":\"Gonnect rocks\", \"obj1\":{\"obj11\":\"A\", \"obj12\":\"B\"}}";
         JsonBusinessObjects o = new JsonBusinessObjects(json_str);
         assertTrue(o.hasNext());
-        BusinessObjectJson v = o.next();
+        GenericObjectJson v = o.next();
 
         assertNotNull(v);
         assertEquals(v.get("obj1.obj12"), "B");
@@ -73,7 +73,7 @@ public class BusinessObjectJsonTest {
 
         JsonBusinessObjects o = new JsonBusinessObjects(json_str);
         assertTrue(o.hasNext());
-        BusinessObjectJson v = o.next();
+        GenericObjectJson v = o.next();
 
         assertNotNull(v);
         assertEquals(v.get("obj1.obj12"), "B");

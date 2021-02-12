@@ -13,7 +13,7 @@ import com.google.gson.JsonSyntaxException;
  * @author Yehuda Korotkin
  *
  */
-public class BusinessObjectJson extends BusinessObject {
+public class GenericObjectJson extends GenericObject {
 	private static final long serialVersionUID = -856082492778433564L;
 	private JsonObject jObj;
 	private Boolean change = false;
@@ -21,7 +21,7 @@ public class BusinessObjectJson extends BusinessObject {
 	private JsonBusinessObjects parent;
 	
 	
-	public BusinessObjectJson(JsonBusinessObjects jsonBusinessObjects, JsonElement je) {
+	public GenericObjectJson(JsonBusinessObjects jsonBusinessObjects, JsonElement je) {
 		this.gson = new Gson();
 		this.jObj = (JsonObject) je;
 		this.parent = jsonBusinessObjects;

@@ -12,7 +12,7 @@ import com.google.gson.JsonElement;
  * @author Yehuda Korotkin
  *
  */
-public class JsonBusinessObjects implements Iterator<BusinessObjectJson> {
+public class JsonBusinessObjects implements Iterator<GenericObjectJson> {
 	private JsonElement element;
 
 	private Boolean change = false;
@@ -67,12 +67,12 @@ public class JsonBusinessObjects implements Iterator<BusinessObjectJson> {
 	}
 
 	@Override
-	public BusinessObjectJson next() {
+	public GenericObjectJson next() {
 		try {
 			if (element.isJsonArray())
-				return new BusinessObjectJson(this, element.getAsJsonArray().get(idx));
+				return new GenericObjectJson(this, element.getAsJsonArray().get(idx));
 			else
-				return new BusinessObjectJson(this, element.getAsJsonObject());
+				return new GenericObjectJson(this, element.getAsJsonObject());
 		} finally {
 			idx++;
 		}

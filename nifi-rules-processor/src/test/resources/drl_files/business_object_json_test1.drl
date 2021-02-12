@@ -1,10 +1,10 @@
 package com.gonnect.nifi.rules
 
-import com.gonnect.nifi.objects.BusinessObject
+import com.gonnect.nifi.objects.GenericObject
 
 rule "Good Morning"
 when
-	b: BusinessObject()
+	b: GenericObject()
 eval( b.getAsInt("time") < 12 )
 then
 	b.set("greet","G00d Morning " + b.get("name")); 
@@ -12,7 +12,7 @@ end
 
 rule "Good Afternoon"
 when
-	b: BusinessObject()
+	b: GenericObject()
 	eval(b.getAsInt("time") >=12 && b.getAsInt("time") < 16)
 then
 	b.set("greet","Good Afternoon " + b.get("name"));
@@ -20,7 +20,7 @@ end
 
 rule "Good Night"
 when
-	b: BusinessObject()
+	b: GenericObject()
 	eval(b.getAsInt("time") >= 16)
 then
 	b.set("greet","Good Afternoon " + b.get("name"));

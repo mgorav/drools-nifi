@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.gonnect.nifi.objects.BusinessObjectJson;
+import com.gonnect.nifi.objects.GenericObjectJson;
 import com.gonnect.nifi.objects.JsonBusinessObjects;
 import com.gonnect.nifi.drool.service.RuleEngine;
 
@@ -45,7 +45,7 @@ public class RuleEngienTest {
 		
 		JsonBusinessObjects jbo = new JsonBusinessObjects(isr);
 		assertTrue(jbo.hasNext());
-		BusinessObjectJson c = jbo.next();
+		GenericObjectJson c = jbo.next();
 		
 		RuleEngine re = RuleEngine.createSession(tu.getResourcePath("drl_files/business_object_json_test1.drl"));
 		re.execute(c);
@@ -63,7 +63,7 @@ public class RuleEngienTest {
 
 		assertTrue(jbo.hasNext());
 		while (jbo.hasNext()) {
-			BusinessObjectJson businessObjectJson = (BusinessObjectJson) jbo.next();
+			GenericObjectJson businessObjectJson = (GenericObjectJson) jbo.next();
 			re.execute(businessObjectJson);			
 		}
 		

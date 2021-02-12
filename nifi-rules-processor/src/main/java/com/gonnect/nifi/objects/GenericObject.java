@@ -2,7 +2,7 @@ package com.gonnect.nifi.objects;
 
 import java.io.Serializable;
 
-public abstract class BusinessObject implements Serializable {
+public abstract class GenericObject implements Serializable {
 	private static final long serialVersionUID = 5375497145393181727L;
 	abstract public Boolean isChanged();
 	abstract public String get(String path);
