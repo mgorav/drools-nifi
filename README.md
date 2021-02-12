@@ -9,7 +9,7 @@
 
 - Rule engine based Rule (IF THEN) provides abstraction of hardcoding rules inside the application, hence very powerful.
 
-## Packaging install NAR to Nifi installation
+## Packaging install NAR to Apache Nifi installation 
 Step 1. `mvn clean install package -DskipTests`
 Step 2. copy nar file from `/nifi-rules-processor/nifi-ruleengien-processor-nar/target/nifi-rules-processor-nar-{VERSION}.nar` to NiFi folder `/nifi-{version}/lib`
 Step 3. (Re) start NiFi
