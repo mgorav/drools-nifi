@@ -53,63 +53,59 @@ import com.gonnect.nifi.objects.JsonBusinessObjects;
 import com.gonnect.nifi.drool.service.RuleEngine;
 
 
-@SideEffectFree
-@Tags({"Rule Engine","Processor","Drools","drl","Gonnect"})
-@CapabilityDescription("Rule engine for nifi")
-@Description("This is rule engien")
 public class RuleEngineProcessor extends AbstractProcessor {
 
     public static final PropertyDescriptor DRL_PATH = new PropertyDescriptor
-        .Builder().name("DRL file path")
-        .displayName("DRL file path")
-        .description("File ends with .drl or .xls that contines drools rules")
-        .required(true)
-        .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
-        .addValidator(StandardValidators.FILE_EXISTS_VALIDATOR)
-        .build();
+            .Builder().name("DRL file path")
+            .displayName("DRL file path")
+            .description("File ends with .drl or .xls that contines drools rules")
+            .required(true)
+            .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
+            .addValidator(StandardValidators.FILE_EXISTS_VALIDATOR)
+            .build();
 
 
     public static final Relationship SUCCESS = new Relationship.Builder()
-        .name("success")
-        .description("Success relationship")
-        .build();
+            .name("success")
+            .description("Success relationship")
+            .build();
 
     public static final Relationship FAILD = new Relationship.Builder()
-        .name("failed")
-        .description("Failed relationship")
-        .build();
+            .name("failed")
+            .description("Failed relationship")
+            .build();
 
-    
+
     private List<PropertyDescriptor> descriptors;
 
     private Set<Relationship> relationships;
 
     private final BlockingQueue<byte[]> bufferQueue = new LinkedBlockingQueue<>();
-    
-    private static HashMap<String,RuleEngine> ruleEngineServices = new HashMap<>();
-    
+
+    private static HashMap<String, RuleEngine> ruleEngineServices = new HashMap<>();
+
     private ComponentLog log;
-    
-    
+
+
     private static RuleEngine getRuleEngineService(String filepath) {
-    	if(!ruleEngineServices.containsKey(filepath))
-    		ruleEngineServices.put(filepath, RuleEngine.createSession(filepath));
-    	
-    	return ruleEngineServices.get(filepath);
+        if (!ruleEngineServices.containsKey(filepath))
+            ruleEngineServices.put(filepath, RuleEngine.createSession(filepath));
+
+        return ruleEngineServices.get(filepath);
     }
-    
+
     @Override
     protected void init(final ProcessorInitializationContext context) {
-    	log = getLogger();
-    	log.debug("Init MatrixBI's RuleEngineProcesor");
+        log = getLogger();
+        log.debug("Init MatrixBI's RuleEngineProcesor");
 
-    	final List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
-	        descriptors.add(DRL_PATH);
+        final List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+        descriptors.add(DRL_PATH);
         this.descriptors = Collections.unmodifiableList(descriptors);
 
         final Set<Relationship> relationships = new HashSet<Relationship>();
-	        relationships.add(SUCCESS);
-	        relationships.add(FAILD);
+        relationships.add(SUCCESS);
+        relationships.add(FAILD);
         this.relationships = Collections.unmodifiableSet(relationships);
     }
 
@@ -130,29 +126,29 @@ public class RuleEngineProcessor extends AbstractProcessor {
     @Override
     public void onTrigger(final ProcessContext context, final ProcessSession session) throws ProcessException {
         FlowFile flowFile = session.get();
-        
-        
-        if ( flowFile == null ) {
+
+
+        if (flowFile == null) {
             return;
         }
-       
-              
+
+
         final AtomicReference<JsonBusinessObjects> value = new AtomicReference<>();
-        
+
         session.read(flowFile, new InputStreamCallback() {
             @Override
             public void process(InputStream flowfileInputStream) throws IOException {
-                try{
+                try {
                     InputStreamReader flowfileInputStreamReader = new InputStreamReader(flowfileInputStream);
                     JsonBusinessObjects jsonBusinessObjects = new JsonBusinessObjects(flowfileInputStreamReader);
-                    
+
                     String drl_path = context.getProperty(DRL_PATH).getValue();
-                    while(jsonBusinessObjects.hasNext()) {
-                    	getRuleEngineService(drl_path).execute(jsonBusinessObjects.next());
+                    while (jsonBusinessObjects.hasNext()) {
+                        getRuleEngineService(drl_path).execute(jsonBusinessObjects.next());
                     }
-                    
+
                     value.set(jsonBusinessObjects);
-                }catch(Exception ex){
+                } catch (Exception ex) {
                     ex.printStackTrace();
                     getLogger().error("Failed to read json string.");
                 }
@@ -161,29 +157,28 @@ public class RuleEngineProcessor extends AbstractProcessor {
 
         // Write the results to an attribute
         JsonBusinessObjects results = value.get();
-        
-        if(results==null)
-        {
-        	log.error("Failed to get results");
-        	session.transfer(flowFile, FAILD);	
-        	return;
+
+        if (results == null) {
+            log.error("Failed to get results");
+            session.transfer(flowFile, FAILD);
+            return;
         }
 
-        
+
         // if changed
-        if(results.hasChanged()) {
-	        flowFile = session.write(flowFile, new OutputStreamCallback() {
-	            @Override
-	            public void process(OutputStream out) throws IOException {
-	                out.write(value.get().getJson().getBytes());
-	            }
-	        });
+        if (results.hasChanged()) {
+            flowFile = session.write(flowFile, new OutputStreamCallback() {
+                @Override
+                public void process(OutputStream out) throws IOException {
+                    out.write(value.get().getJson().getBytes());
+                }
+            });
         }
-        
+
         session.transfer(flowFile, SUCCESS);
-        
+
     }
-    
+
 
     @OnStopped
     public void onStopped() {
