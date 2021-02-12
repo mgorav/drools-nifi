@@ -54,7 +54,7 @@ import com.gonnect.nifi.drool.service.RuleEngine;
 
 
 @SideEffectFree
-@Tags({"Rule Engine","Processor","Drools","drl","MatrixBI"})
+@Tags({"Rule Engine","Processor","Drools","drl","Gonnect"})
 @CapabilityDescription("Rule engine for nifi")
 @Description("This is rule engien")
 public class RuleEngineProcessor extends AbstractProcessor {
