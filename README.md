@@ -1,5 +1,5 @@
 
-# Apache Nifi Rule processor (adapter)
+# Apache Nifi Rule processor (Nifi Processor)
 
 
 ## Overview
